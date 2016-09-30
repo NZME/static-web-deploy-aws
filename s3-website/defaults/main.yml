@@ -1,0 +1,24 @@
+---
+s3_website_domain: ""
+s3_website_region: ap-southeast-2
+s3_website_s3_endpoint: "www.{{ s3_website_domain }}.s3-website-{{ s3_website_region }}.amazonaws.com"
+s3_website_s3_public_endpoint: http://s3.amazonaws.com/{{ s3_website_domain }}/
+s3_website_directory: ""
+s3_website_index_document: index.html
+s3_website_error_document: error.html
+s3_website_ns_servers_enabled: no
+s3_website_ns_servers: []
+s3_wesbite_bucket_policy: |
+  {
+    "Statement": [
+      {
+        "Action": [
+          "s3:GetObject"
+        ],
+        "Effect": "Allow",
+        "Resource": "arn:aws:s3:::www.{{ s3_website_domain }}/*",
+        "Principal": "*"
+      }
+    ]
+  }
+s3_website_cloudfront_distribution:

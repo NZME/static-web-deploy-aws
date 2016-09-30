@@ -1,0 +1,22 @@
+---
+- name: Enable Cloudfront API
+  command: aws configure set preview.cloudfront true
+  tags:
+    - cloudfront
+
+- template: src='s3_website_cloudfront_distribution.j2' dest='/tmp/s3_website_cloudfront_distribution.json'
+
+- name: Create Cloudfront Distribution
+  command: aws cloudfront create-distribution --distribution-config 'file:///tmp/s3_website_cloudfront_distribution.json'
+  register: cloudfront_response
+  tags:
+    - cloudfront
+  ignore_errors: yes
+
+- file: path='/tmp/s3_website_cloudfront_distribution.json' state=absent
+
+- set_fact:
+    s3_website_cloudfront_domain: "{{ (cloudfront_response.stdout|from_json)['Distribution']['DomainName'] }}"
+  tags:
+    - cloudfront
+  ignore_errors: yes

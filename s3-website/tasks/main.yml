@@ -1,0 +1,10 @@
+---
+
+
+- debug: msg="{{ lookup('template', 's3_website_cloudfront_distribution.j2') }} is a value from evaluation of this template"
+
+- template: src='s3_website_cloudfront_distribution.j2' dest='./s3_website_cloudfront_distribution.json'
+
+- include: s3.yml
+- include: cloudfront.yml
+- include: route53.yml
