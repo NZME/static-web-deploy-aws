@@ -1,10 +1,11 @@
 ---
 
-
-- debug: msg="{{ lookup('template', 's3_website_cloudfront_distribution.j2') }} is a value from evaluation of this template"
-
-- template: src='s3_website_cloudfront_distribution.j2' dest='./s3_website_cloudfront_distribution.json'
-
 - include: s3.yml
 - include: cloudfront.yml
 - include: route53.yml
+
+- name: 'Get Distribution Informations'
+  shell: aws cloudfront list-distributions --output text --query 'DistributionList.Items[*].[Id, DomainName, Comment, ARN, Origins.Items[0].DomainName]' | grep benoittest3.me | awk '{print "----------------\nID      -> "$1"\nDomain  -> "$2"\nComment -> "$3"\nArn     -> "$4"\nOrigin  -> "$5}'
+  register: distrib_result
+
+- debug: var=distrib_result.stdout_lines

@@ -8,17 +8,10 @@ s3_website_index_document: index.html
 s3_website_error_document: error.html
 s3_website_ns_servers_enabled: no
 s3_website_ns_servers: []
-s3_wesbite_bucket_policy: |
-  {
-    "Statement": [
-      {
-        "Action": [
-          "s3:GetObject"
-        ],
-        "Effect": "Allow",
-        "Resource": "arn:aws:s3:::www.{{ s3_website_domain }}/*",
-        "Principal": "*"
-      }
-    ]
-  }
-s3_website_cloudfront_distribution:
+s3_wesbite_bucket_policy: "s3_website_bucket_policy.j2"
+s3_website_cloudfront_distribution: "s3_website_cloudfront_distribution.j2"
+cf_min_ttl: 60
+cf_max_ttl: 120
+cf_base_domains: ["{{ s3_website_domain }}", "www.{{ s3_website_domain }}", "m.{{ s3_website_domain }}"]
+cf_additional_domains: []
+route_53_enabled: False

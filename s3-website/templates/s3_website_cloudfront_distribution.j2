@@ -57,7 +57,8 @@
       },
       "Quantity": 2
     },
-    "MinTTL": 86400
+    "MinTTL": {{ cf_min_ttl }},
+    "MaxTTL": {{ cf_max_ttl }}
   },
   "CallerReference": "{{ 100000000000000000000 | random }}",
   "ViewerCertificate": {
@@ -74,11 +75,7 @@
     }
   },
   "Aliases": {
-    "Items": [
-      "{{ s3_website_domain }}",
-      "www.{{ s3_website_domain }}",
-      "m.{{ s3_website_domain }}"
-    ],
-    "Quantity": 3
+    "Items": {{ cf_all_domains | to_json }},
+    "Quantity": {{ cf_all_domains|length }}
   }
 }

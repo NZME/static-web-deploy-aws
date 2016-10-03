@@ -1,0 +1,7 @@
+---
+
+- hosts: localhost
+  roles:
+     - role: s3-website
+       s3_website_domain: "benoittest9.me"
+       s3_website_directory: "src_example"

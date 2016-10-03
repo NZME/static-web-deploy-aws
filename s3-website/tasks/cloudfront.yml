@@ -1,4 +1,11 @@
 ---
+
+- name: Set Apache URL
+  set_fact:
+    cf_all_domains: "{{ cf_base_domains + cf_additional_domains }}"
+
+- debug: var=cf_all_domains
+
 - name: Enable Cloudfront API
   command: aws configure set preview.cloudfront true
   tags:
@@ -13,7 +20,7 @@
     - cloudfront
   ignore_errors: yes
 
-- file: path='/tmp/s3_website_cloudfront_distribution.json' state=absent
+#- file: path='/tmp/s3_website_cloudfront_distribution.json' state=absent
 
 - set_fact:
     s3_website_cloudfront_domain: "{{ (cloudfront_response.stdout|from_json)['Distribution']['DomainName'] }}"

@@ -12,8 +12,18 @@
     - s3
     - s3-sync
 
+- name: Create Bucket Policy template for S3
+  template: src='s3_website_bucket_policy.j2' dest='/tmp/s3_website_bucket_policy.json'
+  tags:
+    - s3
+
 - name: Set Bucket Policy for S3
-  command: "aws s3api put-bucket-policy --bucket www.{{ s3_website_domain }} --policy '{{ s3_wesbite_bucket_policy | to_json }}'"
+  command: "aws s3api put-bucket-policy --bucket www.{{ s3_website_domain }} --policy 'file:///tmp/s3_website_bucket_policy.json'"
+  tags:
+    - s3
+
+- name: Delete Bucket Policy template for S3
+  file: path='/tmp/s3_website_bucket_policy.json' state=absent
   tags:
     - s3
 
